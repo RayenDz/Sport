@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://localhost/sport/index.php -->
+<html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+
+  <title>نادي Excellence Sportive</title>
+  <link href="./pagesport_files/css2" rel="stylesheet">
+  <link rel="stylesheet" href="./pagesport_files/all.min.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    
+    /* الشريط الجانبي الاحترافي */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -500px; /* مساحة أكبر لإظهار ظل أو هامش */
+  width: 280px;
+  height: 100%;
+  background: linear-gradient(135deg, #111827, #1f2937); /* تدرج لوني أنيق */
+  color: #f9fafb;
+  padding: 30px 25px;
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.4); /* ظل خارجي ليبدو مرتفع */
+  border-radius: 0 0 0 15px; /* انحناء لطيف عند الزاوية اليسرى السفلى */
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* حركة انسيابية */
+  z-index: 1100;
+  overflow-y: auto;
+  font-family: 'Cairo', sans-serif;
+  user-select: none;
+}
+
+/* حالة الفتح */
+.sidebar.open {
+  right: 0;
+}
+
+/* الروابط داخل الشريط */
+.sidebar a {
+  display: block;
+  color: #e0e7ff; /* لون فاتح وهادئ */
+  margin: 20px 0;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  box-shadow: inset 0 0 0 0 #ef4444;
+}
+
+/* تأثير التمرير على الرابط */
+.sidebar a:hover,
+.sidebar a:focus {
+  background-color: #ef4444; /* لون أحمر جذاب */
+  color: white;
+  box-shadow: inset 5px 0 0 0 #b91c1c; /* شريط جانبي لتمييز العنصر */
+  transform: translateX(-5px);
+  outline: none;
+}
+
+/* تحسين تمرير الشريط */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(239, 68, 68, 0.7);
+  border-radius: 3px;
+}
+
+/* إضافة تأثير ظل خفيف تحت العناوين في الشريط */
+.sidebar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-shadow: 0 2px 5px rgba(239, 68, 68, 0.7);
+}
+
+     /* زر فتح/إغلاق الشريط الجانبي */
+    .sidebar-toggle {
+      position: fixed;
+      top: 100px;
+      right: 10px;
+      z-index: 1100;
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+  /* خلفية التعتيم */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 999;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+header {
+  background-color: #b30000;
+  color: white;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
+
+
+    header img {
+      height: 70px;
+    }
+
+ header h1 {
+  text-align: center;
+  margin: 0;
+  font-size: 24px;
+}
+
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    nav a {
+      color: white;
+      background-color: #800000;
+      padding: 8px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #590000;
+    }
+
+    .datetime {
+      text-align: center;
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .about {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .report-btn {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .report-btn a {
+      background-color: #b30000;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 6px;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .report-btn a:hover {
+      background-color: #800000;
+    }
+
+    footer {
+      background-color: #222;
+      color: #eee;
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: 40px;
+    }
+
+    .social a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .social a:hover {
+      color: #ffdddd;
+    }
+
+    .whatsapp-msg {
+      margin-top: 20px;
+    }
+
+    .whatsapp-msg textarea {
+      width: 100%;
+      max-width: 500px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+
+    .whatsapp-msg button {
+      background-color: #25D366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .whatsapp-msg button:hover {
+      background-color: #1ebd58;
+    }
+
+    .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  justify-items: center;
+}
+
+.gallery img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+.matches {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 1100px;
+    margin: 30px auto;
+  }
+  .matches h2 {
+    text-align: center;
+    color: #b30000;
+    margin-bottom: 25px;
+  }
+  .matches-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+    gap: 20px;
+  }
+  .match-card {
+    border: 1px solid #ddd;
+    padding: 15px 20px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    transition: box-shadow 0.3s ease;
+  }
+  .match-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
+  .teams {
+    font-weight: bold;
+    font-size: 18px;
+    color: #800000;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .vs {
+    margin: 0 10px;
+    color: #555;
+  }
+  .datetime-location {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .datetime-location span {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .score {
+    font-size: 22px;
+    text-align: center;
+    color: #b30000;
+    margin-bottom: 10px;
+  }
+  .promo-text {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    white-space: pre-wrap;
+  }
+
+  .container {
+  width: 90%; /* عرض نسبي */
+  max-width: 1200px; /* أقصى عرض */
+  margin: auto;
+}
+/* شاشات الحاسوب */
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+    width: 300px;
+  }
+}
+
+/* شاشات الأجهزة اللوحية */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar {
+    width: 200px;
+  }
+}
+
+/* شاشات الهواتف */
+@media (max-width: 767px) {
+  .sidebar {
+    display: none; /* إخفاء الشريط الجانبي في الهواتف */
+  }
+  .content {
+    width: 100%;
+  }
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sidebar {
+  flex: 1 1 250px;
+}
+
+.content {
+  flex: 3 1 700px;
+}
+
+
+  </style>
+
+
+</head>
+
+<body>
+  <header>
+    <img src="./pagesport_files/spo1.png" alt="شعار النادي">
+    <h1>نادي Excellence Sportive - خميس مليانة</h1>
+    <nav>
+      <a href="http://localhost/sport/index.php"><i class="fas fa-users"></i> الرأيسية</a>
+      <a href="http://localhost/sport/entraineurs.php"><i class="fas fa-users"></i> المدربون</a>
+      <a href="http://localhost/sport/players.php"><i class="fas fa-futbol"></i> اللاعبون</a>
+      <a href="http://localhost/sport/presences.php"><i class="fas fa-clipboard-check"></i> الحضور</a>
+      <a href="http://localhost/sport/paiements.php"><i class="fas fa-money-bill-wave"></i> الدفعات</a>
+      <a href="http://localhost/sport/matches.php"><i class="fas fa-calendar-check"></i> تسجيل المقابلات </a>
+       <a href="http://localhost/sport/vmatches.php"><i class="fas fa-calendar-check"></i> نتائج المباريات</a>
+    </nav>
+  </header>
+
+  <div class="datetime">
+    <span id="clock">16:12:45</span> | <span id="date">السبت، 24 ماي 2025</span>
+  </div>
+
+  <div class="content">
+    <section class="about">
+      <h2>نبذة عن النادي</h2>
+<p>
+  تأسس نادي <strong>Excellence Sportive</strong> بمدينة <strong>خميس مليانة</strong> سنة 2020، ليكون فضاءً رياضيًا رائدًا في تكوين وتطوير الرياضيين من مختلف الأعمار والمستويات. يهدف النادي إلى صقل المواهب وتعزيز القدرات البدنية والفنية، من خلال برامج تدريبية مدروسة تُشرف عليها نخبة من المدربين المحترفين ذوي الكفاءة العالية والخبرة الواسعة.
+</p>
+
+<p>
+  يضم النادي ثلاث شعب رياضية رئيسية:
+  </p><ul>
+    <li><strong>⚽ كرة القدم:</strong> تدريب تقني وبدني متكامل لجميع الفئات، من المبتدئين إلى المستوى التنافسي، مع تركيز على الانضباط والعمل الجماعي.</li>
+    <li><strong>🏊 السباحة:</strong> تأطير شامل لكل المستويات بأساليب تعليمية حديثة تراعي السلامة وتضمن التطور المستمر للسباحين.</li>
+    <li><strong>🚴 الدراجات الهوائية:</strong> تدريبات فردية وجماعية تهدف إلى بناء اللياقة والتحكم، مدعّمة بخَرجات ميدانية ممتعة وتحفيزية.</li>
+  </ul>
+<p></p>
+
+<p>
+  يلتزم نادي <strong>Excellence Sportive</strong> بتوفير بيئة رياضية مثالية، تجمع بين الاحترافية والتشجيع على التفوق، ليكون منصة حقيقية لبناء جيل رياضي متميز يحمل قيم الروح الرياضية والطموح.
+</p>
+
+
+    </section>
+  <!-- زر القائمة والشريط الجانبي -->
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰ القائمة</button>
+  <div id="sidebar" class="sidebar" aria-label="القائمة الجانبية">
+    <h2 class="text-xl font-bold mb-4">نظام إدارة النادي</h2>
+    <a href="http://localhost/sport/index.php">الرئيسية</a>
+    <a href="http://localhost/sport/players.php">اللاعبون</a>
+    <a href="http://localhost/sport/entraineurs.php">المدربون</a>
+    <a href="http://localhost/sport/paiements.php">الدفعات</a>
+    <a href="http://localhost/sport/presences.php">الحضور</a>
+    <a href="http://localhost/sport/reports.php">التقارير</a>
+    <a href="http://localhost/sport/matches.php">المباريات</a>
+  </div>
+  <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+ 
+
+<section class="matches">
+  <h2>آخر 3 مباريات</h2>
+      <div class="matches-list">
+              <div class="match-card">
+          <div class="teams">
+            <span class="team-home">نادي اكسلنس خميس </span>
+            <span class="vs">- ضد -</span>
+            <span class="team-away">الجزائر</span>
+          </div>
+          <div class="datetime-location">
+            <span class="date">24/05/2025</span>
+            <span class="time">11:00</span>
+            <span class="location">الجزائر</span>
+          </div>
+          <div class="score">
+                        <strong>1 : 2</strong>
+          </div>
+          <p class="promo-text">مقابلة ودية</p>
+        </div>
+              <div class="match-card">
+          <div class="teams">
+            <span class="team-home">وهران</span>
+            <span class="vs">- ضد -</span>
+            <span class="team-away">نادي خميس مليانة</span>
+          </div>
+          <div class="datetime-location">
+            <span class="date">10/05/2025</span>
+            <span class="time">11:00</span>
+            <span class="location">وهران</span>
+          </div>
+          <div class="score">
+                        <strong>1 : 3</strong>
+          </div>
+          <p class="promo-text">مبارات ودية بين الفريق</p>
+        </div>
+              <div class="match-card">
+          <div class="teams">
+            <span class="team-home">بليدة</span>
+            <span class="vs">- ضد -</span>
+            <span class="team-away">خميس مليانة</span>
+          </div>
+          <div class="datetime-location">
+            <span class="date">01/05/2025</span>
+            <span class="time">12:00</span>
+            <span class="location">الجزائر</span>
+          </div>
+          <div class="score">
+                        <strong>1 : 2</strong>
+          </div>
+          <p class="promo-text">مقابلة متوسطة</p>
+        </div>
+          </div>
+  </section>
+   
+      <section class="gallery">
+  <img src="./pagesport_files/XlAEUWV.jpeg" alt="صورة الفريق">
+  <img src="./pagesport_files/1QPLAcF.png" alt="صورة الفريق">
+  <img src="./pagesport_files/WD5wnSm.jpeg" alt="صورة الفريق">
+  <img src="./pagesport_files/WlFdYx3.jpeg" alt="صورة الفريق">
+  <img src="./pagesport_files/fKPY5nU.png" alt="صورة الفريق">
+  <img src="./pagesport_files/oO14C9d.png" alt="صورة الفريق">
+
+   <img src="./pagesport_files/3aOMykN.png" alt="صورة الفريق">
+  <img src="./pagesport_files/wxA825W.png" alt="صورة الفريق">
+  <img src="./pagesport_files/Rk5IIAr.png" alt="صورة الفريق">
+  <img src="./pagesport_files/5rCgmpr.jpeg" alt="صورة الفريق">
+</section>
+
+
+
+
+
+    <div class="report-btn">
+      <a href="http://localhost/sport/generate_report.php" target="_blank"><i class="fas fa-file-alt"></i> توليد تقرير شامل حول الفريق</a>
+    </div>
+  </div>
+
+  <footer>
+    <p><i class="fas fa-map-marker-alt"></i> موقع النادي: ملعب خميس مليانة، ولاية عين الدفلى</p>
+    <div class="social">
+      <a href="https://www.facebook.com/profile.php?id=100064002554492" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://wa.me/213552656078" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <p><i class="fas fa-phone"></i> 0552656078</p>
+    <div class="whatsapp-msg">
+      <form action="https://wa.me/213552656078" method="get" target="_blank">
+        <label for="msg">✍️ أرسل رسالة عبر واتساب:</label><br>
+        <textarea name="text" id="msg" rows="3" placeholder="اكتب رسالتك هنا..."></textarea><br>
+        <button type="submit">📤 إرسال</button>
+      </form>
+    </div>
+  </footer>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('clock').innerText = now.toLocaleTimeString();
+      document.getElementById('date').innerText = now.toLocaleDateString('ar-DZ', options);
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+  </script>
+  
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    }
+  </script>
+
+
+</body></html>
