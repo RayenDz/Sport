@@ -402,8 +402,10 @@ header {
     <h1>نادي Excellence Sportive - خميس مليانة</h1>
     <nav>
       <a href="index.php"><i class="fas fa-users"></i> الرأيسية</a>
-      <a href="entraineurs.php"><i class="fas fa-users"></i> المدربون</a>
-      <a href="players.php"><i class="fas fa-futbol"></i> اللاعبون</a>
+      <a href="entraineurs.php"><i class="fas fa-users"></i> تسجيل الدرب</a>
+      <a href="ventraineurs.php"><i class="fas fa-users"></i> عرض المدربين</a>
+      <a href="players.php"><i class="fas fa-futbol"></i> تسجيل اللاعب</a>
+      <a href="vplayers.php"><i class="fas fa-futbol"></i> عرض اللاعبين</a>
       <a href="presences.php"><i class="fas fa-clipboard-check"></i> الحضور</a>
       <a href="paiements.php"><i class="fas fa-money-bill-wave"></i> الدفعات</a>
       <a href="matches.php"><i class="fas fa-calendar-check"></i> تسجيل المقابلات </a>
@@ -442,7 +444,8 @@ header {
   <div id="sidebar" class="sidebar" aria-label="القائمة الجانبية">
     <h2 class="text-xl font-bold mb-4">نظام إدارة النادي</h2>
     <a href="index.php">الرئيسية</a>
-    <a href="players.php">اللاعبون</a>
+    <a href="players.php">تسجيل اللاعبين</a>
+    <a href="vplayers.php">عرض اللاعبين</a>
     <a href="entraineurs.php">المدربون</a>
     <a href="paiements.php">الدفعات</a>
     <a href="presences.php">الحضور</a>
@@ -454,57 +457,35 @@ header {
 
 <section class="matches">
   <h2>آخر 3 مباريات</h2>
-      <div class="matches-list">
-              <div class="match-card">
+  <?php if ($result && $result->num_rows > 0): ?>
+    <div class="matches-list">
+      <?php while($row = $result->fetch_assoc()): ?>
+        <div class="match-card">
           <div class="teams">
-            <span class="team-home">نادي اكسلنس خميس </span>
+            <span class="team-home"><?= htmlspecialchars($row['team_home']) ?></span>
             <span class="vs">- ضد -</span>
-            <span class="team-away">الجزائر</span>
+            <span class="team-away"><?= htmlspecialchars($row['team_away']) ?></span>
           </div>
           <div class="datetime-location">
-            <span class="date">24/05/2025</span>
-            <span class="time">11:00</span>
-            <span class="location">الجزائر</span>
+            <span class="date"><?= date('d/m/Y', strtotime($row['match_date'])) ?></span>
+            <span class="time"><?= substr($row['match_time'], 0, 5) ?></span>
+            <span class="location"><?= htmlspecialchars($row['location']) ?></span>
           </div>
           <div class="score">
-                        <strong>1 : 2</strong>
+            <?php
+              $scoreHome = is_null($row['score_home']) ? '-' : $row['score_home'];
+              $scoreAway = is_null($row['score_away']) ? '-' : $row['score_away'];
+            ?>
+            <strong><?= $scoreHome ?> : <?= $scoreAway ?></strong>
           </div>
-          <p class="promo-text">مقابلة ودية</p>
+          <p class="promo-text"><?= nl2br(htmlspecialchars($row['promo_text'])) ?></p>
         </div>
-              <div class="match-card">
-          <div class="teams">
-            <span class="team-home">وهران</span>
-            <span class="vs">- ضد -</span>
-            <span class="team-away">نادي خميس مليانة</span>
-          </div>
-          <div class="datetime-location">
-            <span class="date">10/05/2025</span>
-            <span class="time">11:00</span>
-            <span class="location">وهران</span>
-          </div>
-          <div class="score">
-                        <strong>1 : 3</strong>
-          </div>
-          <p class="promo-text">مبارات ودية بين الفريق</p>
-        </div>
-              <div class="match-card">
-          <div class="teams">
-            <span class="team-home">بليدة</span>
-            <span class="vs">- ضد -</span>
-            <span class="team-away">خميس مليانة</span>
-          </div>
-          <div class="datetime-location">
-            <span class="date">01/05/2025</span>
-            <span class="time">12:00</span>
-            <span class="location">الجزائر</span>
-          </div>
-          <div class="score">
-                        <strong>1 : 2</strong>
-          </div>
-          <p class="promo-text">مقابلة متوسطة</p>
-        </div>
-          </div>
-  </section>
+      <?php endwhile; ?>
+    </div>
+  <?php else: ?>
+    <p>لا توجد مباريات لعرضها حالياً.</p>
+  <?php endif; ?>
+</section>
    
       <section class="gallery">
   <img src="https://i.imgur.com/XlAEUWV.jpeg" alt="صورة الفريق">
@@ -565,7 +546,27 @@ header {
       overlay.classList.toggle('show');
     }
   </script>
+
   <script>
+    // تعطيل النقر بزر الماوس الأيمن
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // تعطيل التحديد
+    document.onselectstart = function () {
+        return false;
+    };
+
+    // تعطيل اختصارات لوحة المفاتيح مثل Ctrl+C
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'C')) {
+            e.preventDefault();
+        }
+    });
+
+</script>
+<script>
     // تعطيل النقر بزر الماوس الأيمن
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
